@@ -10,38 +10,40 @@ Returning the contents of root directory as an object:
 
 ```javascript
 // .JSX
-function readFullDirectory(path){  
-  var mirror = {}  
-  var f = Folder(path);  
-  var allFiles = f.getFiles();  
-  var thisFile;  
-  for (var i = 0; i < allFiles.length; i++) {  
-    thisFile = allFiles[i];  
-    if (thisFile instanceof Folder) {  
-      mirror[thisFile.name] = readFullDirectory(thisFile);  
-    } else {  
-      mirror[thisFile.name] = thisFile;  
-    }  
-  }  
-  return JSON.stringify(mirror);  
+function readFullDirectory(path){
+  var mirror = {}
+  var f = Folder(path);
+  var allFiles = f.getFiles();
+  var thisFile;
+  for (var i = 0; i < allFiles.length; i++) {
+    var name = this;
+    thisFile = allFiles[i];
+    if (thisFile instanceof Folder) {
+      mirror[thisFile.name] = readFullDirectory(thisFile);
+    } else {
+      mirror[thisFile.name] = thisFile;
+    }
+  }
+  return JSON.stringify(mirror);
 }
 ```
 
 ```javascript
 // .JS
-csInterface.evalScript(`readFullDirectory('${sysPath}')`, function(mirror){  
-  var root = parseAll(mirror);  
-  console.log(result);  
-});  
+csInterface.evalScript(`readFullDirectory('${sysPath}')`, function(mirror){
+  var root = parseAll(mirror);
+  console.log(root);
+});
 
-
-function parseAll(str){  
-  var result = JSON.parse(str);  
-  for (let [key, value] of Object.entries(result)) {  
-    if (typeof value !== 'object') {  
-      result[key] = parseAll(value);  
-    }  
-  }  
-  return result;  
+function parseAll(str){
+  var result = JSON.parse(str);
+  for (let [key, value] of Object.entries(result)) {
+    if (typeof value !== 'object') {
+      result[key] = parseAll(value);
+    } else {
+      result[key] = key;
+    }
+  }
+  return result;
 }
 ```

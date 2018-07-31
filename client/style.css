@@ -11,6 +11,8 @@
   font-size: 11px;
 }
 
+
+
 .tree {
   display: flex;
   justify-content: center;
@@ -22,7 +24,35 @@
   /* border: 2px solid white; */
   width: var(--treeWidth);
   /* height: var(--treeHeight); */
+  /* overflow: scroll; */
 }
+
+
+/* #soil {
+  overflow: scroll;
+} */
+
+::-webkit-scrollbar {
+  background: #2A2A2A;
+}
+/* border-radius: 20px; */
+
+::-webkit-scrollbar-thumb {
+  background: #3E3E3E;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-corner {
+  /* display: none; */
+}
+
+::-webkit-scrollbar-resizer {
+  z-index: -10;
+}
+
+
+
+
 
 .treeRoots {
   width: 100%;

@@ -20,9 +20,25 @@ var isFold = false;
 csInterface.evalScript(`readFullDirectory('${sysPath}')`, function(mirror){
   var root = parseAll(mirror);
   console.log(root);
+  generateTreeMenuFromRootObject(root, soil, 0);
   // console.log(root.client.index.html);
   // console.log(root.client['index.html']);
 });
+
+
+function generateTreeMenuFromRootObject(mirror, parent, nestingLevel){
+  for (let [key, value] of Object.entries(mirror)) {
+    if (typeof value == 'object') {
+      console.log(key + ": " + value + " is a folder");
+      if (key !== '.git')
+        generateTreeMenuFromRootObject(value, spawnBranch(key), nestingLevel++);
+    } else {
+      console.log(key + ": " + value + " is a file nested at: " + nestingLevel);
+      spawnLeaflet(parent, value, nestingLevel);
+    }
+  }
+  // console.log(mirror);
+}
 
 function parseAll(str){
   var result = JSON.parse(str);
@@ -74,26 +90,24 @@ function switchClass(elt, class1, class2) {
 //
 // }
 
-var hostBranch;
-var branchBtn = document.getElementById('spawnBranch');
-branchBtn.addEventListener('click', function(e){
-  hostBranch = spawnBranch('host');
-});
-
-
-var leafBtn = document.getElementById('spawnLeaf');
-leafBtn.addEventListener('click', function(e){
-  var newFile = spawnLeaflet(hostBranch, 'newFile.jsx', 1);
-});
-
-
-
+// var hostBranch;
+// var branchBtn = document.getElementById('spawnBranch');
+// branchBtn.addEventListener('click', function(e){
+//   hostBranch = spawnBranch('host');
+// });
+//
+//
+// var leafBtn = document.getElementById('spawnLeaf');
+// leafBtn.addEventListener('click', function(e){
+//   var newFile = spawnLeaflet(hostBranch, 'newFile.jsx', 1);
+// });
 
 
 function spawnBranch(label){
   try {
     var roots = appendChild(soil, 'div', 'treeRoots');
     var trunk = appendChild(roots, 'div', 'tree inactive treeTrunk');
+    var nest = appendChild(roots, 'div', 'nest');
     var branch = appendChild(trunk, 'div', 'treeBranch');
     var limb = appendChild(branch, 'div', 'treeLimb');
     var dropBtn = appendChild(limb, 'div', 'tree treeLeaf');
@@ -113,8 +127,18 @@ function spawnBranch(label){
 
 function spawnLeaflet(roots, label, nestingLevel) {
   try {
+    // var soil = roots.parentNode;
+    var children = roots.children;
+    for (var i = 0; i < children.length; i++) {
+      // console.log(children[i]);
+      if (children[i] == roots) {
+        continue
+      } else {
+        var nest = children[i];
+      }
+    }
     // var roots = appendChild(fromBranch, 'div', 'treeRoots');
-    var trunk = appendChild(roots, 'div', 'tree inactive treeTrunk');
+    var trunk = appendChild(nest, 'div', 'tree inactive treeTrunk');
     var branch = appendChild(trunk, 'div', 'treeBranch');
     var limb = appendChild(branch, 'div', 'treeLimb');
     for (var i = 1; i <= nestingLevel; i++) {
@@ -139,7 +163,7 @@ function appendChild(parent, child, ...args){
   var newChild = document.createElement(child);
   newChild.setAttribute('class', args[0]);
   if ((args.length > 1) && (child == 'span')) {
-    console.log('span created');
+    // console.log('span created');
     newChild.textContent = args[1];
   // } else if (args.length > 1) {
   }

@@ -77,7 +77,7 @@ html {
 
 body {
   margin: 0px 5%;
-  overflow: hidden;
+  /* overflow: hidden; */
   background-color: var(--colorPanelBG);
   color: var(--colorIcon);
 }
