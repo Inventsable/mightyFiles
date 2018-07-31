@@ -2,56 +2,46 @@
 
 Testing mechanics for a treeview menu, reading all files and folders of a directory:
 
+![testing tree menu](https://thumbs.gfycat.com/CalmTidyDesertpupfish-size_restricted.gif)
+
+Returning the contents of root directory as an object:
+
+![console result](https://i.imgur.com/FyaAra4.png)
+
 ```javascript
-
-readChildren(rootFolder);
-
-function readChildren(path) {
-  var subFolders = getChildren(path, 'Folders');
-  var subFiles = getChildren(path, 'Files');
-  var children = [];
-  if (subFolders) {
-    for (var i = 0; i < subFolders.length; i++) {
-      children.push(subFolders[i])
-      children.push(readChildren(subFolders[i]));
-    }
-  }
-  if (subFiles) {
-    for (var i = 0; i < subFiles.length; i++) {
-      children.push(subFiles[i]);
-    }
-  }
-  if (!children.length) {
-    return false;
-  } else {
-    return children;
-  }
+// .JSX
+function readFullDirectory(path){  
+  var mirror = {}  
+  var f = Folder(path);  
+  var allFiles = f.getFiles();  
+  var thisFile;  
+  for (var i = 0; i < allFiles.length; i++) {  
+    thisFile = allFiles[i];  
+    if (thisFile instanceof Folder) {  
+      mirror[thisFile.name] = readFullDirectory(thisFile);  
+    } else {  
+      mirror[thisFile.name] = thisFile;  
+    }  
+  }  
+  return JSON.stringify(mirror);  
 }
+```
+
+```javascript
+// .JS
+csInterface.evalScript(`readFullDirectory('${sysPath}')`, function(mirror){  
+  var root = parseAll(mirror);  
+  console.log(result);  
+});  
 
 
-function getChildren(path, type){
-  var thisFolder = Folder(path);
-  var children = thisFolder.getFiles();
-  var subs = [];
-  if (!children.length) {
-    return false;
-  } else {
-    for (var i = 0; i < children.length; i++) {
-      switch (type) {
-        case 'Folders':
-          if ((/\/(\w|\-|\d)*$/g.test(children[i])) && !(/LICENSE/.test(children[i])))
-            subs.push(children[i]);
-          break;
-        case 'Files':
-          if ((/\/(\w|\d|\-)*\.(\w)*$/g.test(children[i])) || (/LICENSE/.test(children[i])))
-            subs.push(children[i]);
-          break;
-        default:
-          subs.push(children[i]);
-          break;
-      }
-    }
-    return subs;
-  }
+function parseAll(str){  
+  var result = JSON.parse(str);  
+  for (let [key, value] of Object.entries(result)) {  
+    if (typeof value !== 'object') {  
+      result[key] = parseAll(value);  
+    }  
+  }  
+  return result;  
 }
 ```

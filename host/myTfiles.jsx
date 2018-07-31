@@ -1,6 +1,54 @@
+// recurseChildren(rootFolder)
+
+
+function remove(arr, item) {
+    for (var i = arr.length; i--;) {
+        if (arr[i] === item) {
+            arr.splice(i, 1);
+        }
+    }
+    return arr;
+}
+
+
+function inArray(arr, item) {
+  var result = false;
+    for (var i = arr.length; i--;) {
+        if (arr[i] === item) {
+            result = true;
+        }
+    }
+    return result;
+}
+
+
+
+// var testArray = ['./client', '.git', './host'];
+//
+// console.log(inArray(testArray, '.git'));
+
+
+function readFullDirectory(path){
+  var mirror = {}
+  var f = Folder(path);
+  var allFiles = f.getFiles();
+  var thisFile;
+  for (var i = 0; i < allFiles.length; i++) {
+    var name = this;
+    thisFile = allFiles[i];
+    if (thisFile instanceof Folder) {
+      mirror[thisFile.name] = readFullDirectory(thisFile);
+    } else {
+      mirror[thisFile.name] = thisFile;
+    }
+  }
+  return JSON.stringify(mirror);
+}
+
+
 function recurseChildren(path) {
   var subFolders = getChildren(path, 'Folders');
-  var subFiles = getChildren(path, 'Files');
+  // var subFiles = getChildren(path, 'Files');
   var children = [];
   if (subFolders) {
     for (var i = 0; i < subFolders.length; i++) {
@@ -8,18 +56,17 @@ function recurseChildren(path) {
       children.push(recurseChildren(subFolders[i]));
     }
   }
-  if (subFiles) {
-    for (var i = 0; i < subFiles.length; i++) {
-      children.push(subFiles[i]);
-    }
-  }
+  // if (subFiles) {
+  //   for (var i = 0; i < subFiles.length; i++) {
+  //     children.push(subFiles[i]);
+  //   }
+  // }
   if (!children.length) {
     return false;
   } else {
     return children;
   }
 }
-
 
 function getChildren(path, type){
   var thisFolder = Folder(path);

@@ -93,17 +93,19 @@ const appUI = {
 };
 
 
-function reColorUI(){
+
+function reColorUI() {
   for (let [key, value] of Object.entries(appUI)) {
     if (key === 'data') continue;
     for (let [index, data] of Object.entries(appUI[key])) {
-      document.documentElement.style.setProperty('--' + key + index, data);
+      // document.documentElement.style.setProperty('--' + key + index, data);
+      changeCSSVar(key + index, data);
     }
   }
 }
 
 
-function buildUI(){
+function buildUI() {
   var btnToggles = ['switch', 'switch-on', 'switch-off'];
   for (var i = 0; i < btnToggles.length; i++) {
     var toggleBtn = [].slice.call(document.getElementsByClassName('adobe-btn-' + btnToggles[i]));

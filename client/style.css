@@ -1,1 +1,104 @@
-/* none */
+:root {
+  --branchHeight: 20px;
+  --leafHeight: 16px;
+  --tabHeight: 16px;
+  --treeWidth: 96%;
+  --nestOffset: 16px;
+  --treeHeight: 200px;
+
+  --colorSelect: #374E63;
+  font-family: Roboto, sans-serif;
+  font-size: 11px;
+}
+
+.tree {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  user-select: none;
+}
+
+.treeSoil {
+  /* border: 2px solid white; */
+  width: var(--treeWidth);
+  /* height: var(--treeHeight); */
+}
+
+.treeRoots {
+  width: 100%;
+  justify-content: center;
+  /* height: 2rem; */
+  /* border: 2px solid red; */
+  border-style: solid;
+  border-color: var(--colorBorder);
+  border-top-width: calc(var(--borderWidth)/2);
+  border-bottom-width: calc(var(--borderWidth)/2);
+}
+
+.treeTrunk {
+  width: 100%;
+  cursor: default;
+}
+
+.active {
+  background-color: var(--colorSelect);
+}
+
+.treeLimb {
+  /* border: 2px solid white; */
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  align-items: center;
+}
+
+.nest {
+  display: flex;
+  flex-wrap: wrap;
+  /* border: 2px solid red; */
+  /* width: 100%; */
+}
+
+.treeBranch {
+  border-color: var(--colorBorder);
+  border-style: solid;
+  border-right-width: var(--borderWidth);
+  border-left-width: var(--borderWidth);
+  border-top-width: calc(var(--borderWidth)/2);
+  border-bottom-width: calc(var(--borderWidth)/2);
+  width: 100%;
+  padding: .0625rem;
+  height: var(--branchHeight);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.treeTwig {
+  margin-left: .5rem;
+  cursor: default;
+}
+
+.treeLeaf {
+  align-items: center;
+  /* border: 2px solid blue; */
+  height: var(--leafHeight);
+  width: var(--leafHeight);
+}
+
+.treeText {
+  color: #D0D0D0;
+}
+
+.treeTab {
+  height: var(--tabHeight);
+  width: var(--tabHeight);
+}
+
+/* .treeBranch:first-child {
+  border-top-width: var(--borderWidth);
+}
+
+.treeBranch:last-child {
+  border-bottom-width: var(--borderWidth);
+} */
