@@ -35,8 +35,8 @@ html {
   --borderWidth: 1.5px;
 
   --colorPanelBG: #323232;
-  --panelWidth: auto;
-  --panelHeight: auto;
+
+
   --border: 1.5px solid transparent;
   --btnBorder: 1.5px solid transparent;
 
@@ -76,8 +76,8 @@ html {
 }
 
 body {
-  margin: 0px 5%;
-  /* overflow: hidden; */
+  /* margin: 0px 5%; */
+  overflow: hidden;
   background-color: var(--colorPanelBG);
   color: var(--colorIcon);
 }

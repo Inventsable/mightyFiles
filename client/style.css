@@ -2,16 +2,32 @@
   --branchHeight: 20px;
   --leafHeight: 16px;
   --tabHeight: 16px;
-  --treeWidth: 96%;
+  --treeWidth: 95%;
   --nestOffset: 16px;
   --treeHeight: 200px;
 
+  --panelWidth: auto;
+  --panelHeight: auto;
+
+  --treeHeight: calc(var(--panelHeight) - 20);
   --colorSelect: #374E63;
   font-family: Roboto, sans-serif;
   font-size: 11px;
 }
 
+body {
+  height: 400px;
+}
 
+#mirror {
+  position: absolute;
+  bottom: 0px;
+  /* border: 2px solid red; */
+  height: 280px;
+  width: 98%;
+  /* background-color: green; */
+  /* z-index: 200; */
+}
 
 .tree {
   display: flex;
@@ -25,14 +41,19 @@
   width: var(--treeWidth);
   /* height: var(--treeHeight); */
   /* overflow: scroll; */
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 240px;
+  margin-left: 5%;
+  border-style: solid;
+  border-color: var(--colorBorder);
+  border-top-width: calc(var(--borderWidth)/2);
+  border-bottom-width: calc(var(--borderWidth)/2);
 }
 
 
-/* #soil {
-  overflow: scroll;
-} */
-
 ::-webkit-scrollbar {
+  /* margin-left: 5%; */
   background: #2A2A2A;
 }
 /* border-radius: 20px; */
@@ -42,14 +63,52 @@
   border-radius: 20px;
 }
 
-::-webkit-scrollbar-corner {
-  /* display: none; */
+::-webkit-scrollbar-thumb:hover {
+  background: #525252;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+  /* height: 6px; */
+  /* width: 100%; */
+  /* overflow: hidden;
+  background-size: cover; */
+  /* background-repeat: no-repeat; */
+}
+
+::-webkit-scrollbar:single-button {
+  /* margin: 1rem 0px; */
+}
+
+::-webkit-scrollbar-button:start {
+  background-image: url('./scrollbarUpBtnAlt.png');
+}
+
+::-webkit-scrollbar-button:end {
+  background-image: url('./scrollbarDownBtnAlt.png');
+}
+
+::-webkit-scrollbar-button:start:hover {
+  background-image: url('./scrollbarUpBtnAltHover.png');
+}
+
+::-webkit-scrollbar-button:end:hover {
+  background-image: url('./scrollbarDownBtnAltHover.png');
+}
+
+/* ::-webkit-scrollbar-corner {
+  display: none;
+  background: red;
 }
 
 ::-webkit-scrollbar-resizer {
   z-index: -10;
-}
+} */
 
+
+::-webkit-scrollbar-resizer {
+  z-index: -10;
+}
 
 
 
@@ -59,10 +118,6 @@
   justify-content: center;
   /* height: 2rem; */
   /* border: 2px solid red; */
-  border-style: solid;
-  border-color: var(--colorBorder);
-  border-top-width: calc(var(--borderWidth)/2);
-  border-bottom-width: calc(var(--borderWidth)/2);
 }
 
 .treeTrunk {
