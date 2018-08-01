@@ -1,4 +1,4 @@
-##treeView
+## treeView
 
 Dynamic tree menu generation from any given root directory:
 
