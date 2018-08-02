@@ -20,6 +20,9 @@ function init(){
   }
 
   buildUI();
+  // buildUINew();
+  // console.log(checkboxLogic);
+  console.log(appUI);
 }
 
 function reset(){
@@ -42,6 +45,8 @@ function callDoc() {
 function updateThemeWithAppSkinInfo() {
     reColorUI();
   }
+
+// var checkboxLogic = {};
 
 const appUI = {
   global : {
@@ -93,19 +98,118 @@ const appUI = {
 };
 
 
-
-function reColorUI() {
+function reColorUI(){
   for (let [key, value] of Object.entries(appUI)) {
     if (key === 'data') continue;
     for (let [index, data] of Object.entries(appUI[key])) {
-      // document.documentElement.style.setProperty('--' + key + index, data);
-      changeCSSVar(key + index, data);
+      document.documentElement.style.setProperty('--' + key + index, data);
     }
   }
 }
 
 
-function buildUI() {
+/*---
+*
+*    CHECKBOX
+*
+---*/
+
+// function buildUINew(){
+//   var checkbox = [].slice.call(document.getElementsByClassName('adobe-checkboxGroup'));
+//   checkbox.forEach(function(v,i,a) {
+//     console.log(i);
+//     var child = v.children;
+//     for (var e = 0; e < child.length; e++) {
+//       if (hasClass(child[e], 'adobe-icon-checkBoxOn')) {
+//         checkboxLogic[i] = {
+//           state : true,
+//           elt : v,
+//         }
+//         console.log(child[e]);
+//       } else if (hasClass(child[e], 'adobe-icon-checkBoxOff')) {
+//         checkboxLogic[i] = {
+//           state : false,
+//           elt : v,
+//         }
+//         console.log(child[e]);
+//       }
+//     }
+//
+//     v.addEventListener('click', function(e){
+//       toggleState('set',v);
+//     });
+//   });
+//   console.log(checkboxLogic);
+// }
+//
+//
+// function toggleState(type, parent){
+//   var child = parent.children;
+//   // for (var e = 0; e < child.length; e++) {
+//     if (isCheckbox(child[0])) {
+//       for (let [key, value] of Object.entries(checkboxLogic)) {
+//         if (value.elt == child[0].parentNode) {
+//           console.log(child[0]);
+//           var negative = !value.state;
+//           switch(type) {
+//             case 'find':
+//               console.log(`This state is ${value.state}`);
+//             break;
+//             case 'set':
+//               value.state = negative;
+//               // var thisElt = child[0];
+//               console.log(`New state is ${value.state}`);
+//               toggleCheckbox(value.state, child[0]);
+//             break;
+//
+//             default:
+//             console.log('no params');
+//             break;
+//           }
+//           return value.state;
+//         }
+//       }
+//     } else {
+//       console.log("Is not a checkbox");
+//     }
+//   // }
+// }
+//
+//
+// function isCheckbox(elt) {
+//   var match = false;
+//   if (hasClass(elt, 'adobe-icon-checkBoxOn')) {
+//     match = true;
+//   } else if (hasClass(elt, 'adobe-icon-checkBoxOff')) {
+//     match = true;
+//   }
+//   return match;
+// }
+//
+// function toggleCheckbox(state, checkbox) {
+//   if (state) {
+//     switchClass(checkbox, 'adobe-icon-checkBoxOff', 'adobe-icon-checkBoxOn');
+//   } else {
+//     switchClass(checkbox, 'adobe-icon-checkBoxOn', 'adobe-icon-checkBoxOff');
+//   }
+// }
+//
+//
+// function hasClass(elt, ...targets) {
+//   var match = false;
+//   var classes = elt.classList.toString();
+//   for (var i = 0; i < targets.length; i++) {
+//     if (inString(classes, targets[i])) {
+//       match = true;
+//     }
+//   }
+//   return match;
+// }
+
+
+// @ Rebuild this using SwitchClass
+function buildUI(){
+
   var btnToggles = ['switch', 'switch-on', 'switch-off'];
   for (var i = 0; i < btnToggles.length; i++) {
     var toggleBtn = [].slice.call(document.getElementsByClassName('adobe-btn-' + btnToggles[i]));
@@ -142,36 +246,24 @@ function buildUI() {
   });
 }
 
-function addWheelScrollTo(v, target) {
-  v.addEventListener("mouseover", function(evtTier){
-    console.log(evtTier);
-  });
-  v.addEventListener("wheel", function(evt){
-    var newNum = target.textContent;
-    if (evt.deltaY < 0) {
-      newNum++;
-    } else {
-      newNum--;
-    }
-    console.log(evt);
-    target.textContent = newNum;
-  }, false)
-}
-
-  // var scrollCount = 1;
-  //   window.addEventListener('mousewheel', function(e){
-  //
-  //     if(e.wheelDelta<0 && scrollCount<5){
-  //       scrollCount++;
-  //     }
-  //
-  //     else if(e.wheelDelta>0 && scrollCount>1){
-  //       scrollCount--;
-  //     }
-  //     document.querySelector('.number').innerHTML = scrollCount;
-  //   })
+// function addWheelScrollTo(v, target) {
+//   v.addEventListener("mouseover", function(evtTier){
+//     console.log(evtTier);
+//   });
+//   v.addEventListener("wheel", function(evt){
+//     var newNum = target.textContent;
+//     if (evt.deltaY < 0) {
+//       newNum++;
+//     } else {
+//       newNum--;
+//     }
+//     console.log(evt);
+//     target.textContent = newNum;
+//   }, false)
+// }
 
 
+// This is awful, rebuild with switchClass
 function toolbarToggle(elt) {
   var btnToggles = ['switch', 'switch-on', 'switch-off'];
   var toolbar = [].slice.call(document.getElementsByClassName('adobe-toolbar'));
@@ -386,32 +478,3 @@ function onAppThemeColorChanged(event) {
     logSkin(skinInfo);
     console.log(`Theme changed to ${appUI.data.theme}`);
 }
-
-
-
-// for (value in appUI.color) {
-//   console.log('--color' + value, appUI.color);
-// }
-
-// $$$ // document.documentElement.style.setProperty('--color' + value, 'red');
-
-// var sheets = [].slice.call(document.styleSheets);
-// sheets.forEach(function(e){
-//   if (e.href.includes('adobeStyle.css')) {
-//     var style = e.cssRules.style;
-//     e.cssRules[1].style.setProperty('--colorPanelBG', 'red');
-//     // console.log(e.cssRules[1].style);
-//     // console.log(e.cssRules.style[0]);
-//
-//     // e.cssRules[1].style.setProperty('--colorPanelBG', '#ff0000')
-//   }
-//
-// })
-
-  // var jsSheet = document.styleSheets[7];
-  // var jsRules = jsSheet.cssRules;
-  // console.log(sheet);
-//   for (var i = 0; i < document.styleSheets.length; i++){
-//
-//   }
-// }

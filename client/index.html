@@ -17,18 +17,25 @@
   <body>
 
   <div class="content">
-    <div class="adobe-toolbar">
-      <div id="spawnBranch" class="adobe adobe-btn">
-        <span class="fa fa-bolt fa-lg"></span>
+    <div id="topToolbar" class="adobe-toolbar">
+      <div class="adobe-toolbar">
+        <div id="newRoots" class="adobe adobe-btn">
+          <span class="fa fa-home fa-lg"></span>
+        </div>
+        <div id="saveButton" class="adobe adobe-btn">
+          <span class="fa fa-save fa-lg"></span>
+        </div>
       </div>
-      <div id="spawnLeaf" class="adobe adobe-btn">
-        <span class="fa fa-user-secret fa-lg"></span>
+      <div id="syncPlayWrite" class="adobe adobe-checkboxGroup">
+        <span class="adobe-icon-checkBoxOn"></span>
+        <span class="adobe-checkbox-suffix">Sync with PlayWrite</span>
       </div>
       <div class="adobe-toolbar-divider"></div>
     </div>
 
-    <div id="soil" class="tree treeSoil"></div>
-    <!-- <div id="mirror"></div> -->
+    <div id="soil" class="tree treeSoil nest">
+      <div class="placeholder"></div>
+    </div>
   </div>
 
 <!-- Scripts -->

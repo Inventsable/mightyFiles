@@ -6,6 +6,8 @@ var clientPath = sysPath + '/client/';
 var hostPath = sysPath + "/host/";
 var appName = csInterface.hostEnvironment.appName;
 
+var checkbox = document.getElementById('syncPlayWrite')
+
 loadUniversalJSXLibraries();
 loadJSX(`${appName}.jsx`);
 loadJSX(`myTfiles.jsx`);
@@ -17,16 +19,20 @@ var foldBtn = document.getElementById('fold');
 var foldIcon = document.getElementById('foldIcon');
 var isFold = false;
 
+var familyTree = {};
+
+
 window.onload = init;
 
 function init(){
   csInterface.evalScript(`readFullDirectory('${sysPath}')`, function(mirror){
     var root = parseAll(mirror);
-    var nestNum = 0;
+    // var nestNum = 0;
     console.log(root);
+    // var firstPosition = appendChild(soil, 'div', 'placeholder');
     generateTreeMenuFromRootObject(root, soil, 0, root);
-    // console.log(root.client.index.html);
-    // console.log(root.client['index.html']);
+    console.log(appUI);
+    correctDirectoryPositions(soil);
   });
 }
 
@@ -36,40 +42,181 @@ function init(){
 //   console.log('click off focus!');
 // })
 
+/*---
+*
+*    CHECKBOX
+*
+---*/
+
+var checkboxLogic = {};
+var checkbox = [].slice.call(document.getElementsByClassName('adobe-checkboxGroup'));
+checkbox.forEach(function(v,i,a) {
+  console.log(i);
+  var child = v.children;
+  for (var e = 0; e < child.length; e++) {
+    if (hasClass(child[e], 'adobe-icon-checkBoxOn')) {
+      checkboxLogic[i] = {
+        state : true,
+        elt : v,
+      }
+      console.log(child[e]);
+    } else if (hasClass(child[e], 'adobe-icon-checkBoxOff')) {
+      checkboxLogic[i] = {
+        state : false,
+        elt : v,
+      }
+      console.log(child[e]);
+    }
+  }
+
+  v.addEventListener('click', function(e){
+    toggleState('set',v);
+  });
+});
+
+
+console.log(checkboxLogic);
+
+
+function toggleState(type, parent){
+  var child = parent.children;
+  // for (var e = 0; e < child.length; e++) {
+    if (isCheckbox(child[0])) {
+      for (let [key, value] of Object.entries(checkboxLogic)) {
+        if (value.elt == child[0].parentNode) {
+          console.log(child[0]);
+          var negative = !value.state;
+          switch(type) {
+            case 'find':
+              console.log(`This state is ${value.state}`);
+            break;
+            case 'set':
+              value.state = negative;
+              // var thisElt = child[0];
+              console.log(`New state is ${value.state}`);
+              toggleCheckbox(value.state, child[0]);
+            break;
+
+            default:
+            console.log('no params');
+            break;
+          }
+          return value.state;
+        }
+      }
+    } else {
+      console.log("Is not a checkbox");
+    }
+  // }
+}
+
+
+
+function isCheckbox(elt) {
+  var match = false;
+  if (hasClass(elt, 'adobe-icon-checkBoxOn')) {
+    match = true;
+  } else if (hasClass(elt, 'adobe-icon-checkBoxOff')) {
+    match = true;
+  }
+  return match;
+}
+
+function toggleCheckbox(state, checkbox) {
+  if (state) {
+    switchClass(checkbox, 'adobe-icon-checkBoxOff', 'adobe-icon-checkBoxOn');
+  } else {
+    switchClass(checkbox, 'adobe-icon-checkBoxOn', 'adobe-icon-checkBoxOff');
+  }
+}
+
+
+
+function insertAtPlaceholder(elt, placehold){
+  // var eElement; // some E DOM instance
+  // var childList = parent.children;
+  // var place = parent;
+  // for (var i = 0; i < childList.length; i++) {
+  //   if (hasClass(childList[i], 'placeholder')){
+  //     place = childList[i];
+  //   }
+  // }
+  // parent.insertAdjacentElement('afterbegin', elt)
+  console.log('inserting:');
+  console.log(elt);
+  console.log('before:');
+  console.log(placehold);
+  parent.insertBefore(placehold, elt);
+}
+
+
+
+
+function correctDirectoryPositions(land){
+  // insertAtPlaceholder(elt, parent)
+  var nests = [].slice.call(document.getElementsByClassName('nest'));
+  nests.forEach(function(v,i,a) {
+    var subFolders = [];
+    var placeholder = false;
+    var childList = v.children;
+    for (var i = 0; i < childList.length; i++) {
+      if (hasClass(childList[i], 'treeRoots')) {
+        // console.log(`Found directory:`);
+        // console.log(childList[i]);
+        subFolders.push(childList[i]);
+      } else if (hasClass(childList[i], 'placeholder')) {
+        console.log(`Found placeholder:`);
+        console.log(childList[i]);
+        placeholder = (childList[i]);
+      }
+    }
+    if (!subFolders.length) {
+      console.log('No sub-directories');
+    } else {
+      console.log(`Found directories:`);
+        for (var u = 0; u < subFolders.length; u++) {
+          // console.log();
+          v.insertBefore(subFolders[u], placeholder);
+        }
+    }
+    // console.log(v);
+    // if (v !== selection) {
+    //   switchClass(v, 'active', 'inactive');
+    // }
+  });
+}
+
+
 
 function generateTreeMenuFromRootObject(mirror, parent, master){
+  var thisParent;
   var nestingLevelBranch, nestingLevelLeaf;
-  // console.log(`${mirror} has parent ${parent.classList} total ${master}`);
   for (let [key, value] of Object.entries(mirror)) {
     var newArray = [];
     if (typeof value == 'object') {
-      var thisParent;
       if (key !== '.git') {
         if (parent.id == 'soil') {
           thisParent = soil;
           nestingLevelBranch = 0;
-          // console.log('Level 1');
         } else {
-          // thisParent = mirror;
-          // console.log(parent);
           thisParent = findNestFromRoots(parent);
           nestingLevelBranch = traceAncestry(thisParent, 0, newArray) + 1;
         }
-        // console.log(`Directory ${key} nested at ${nestingLevelBranch}`);
-        generateTreeMenuFromRootObject(value, spawnBranch(key, thisParent, nestingLevelBranch), master);
+        var branch = spawnBranch(key, thisParent, nestingLevelBranch);
+        // insertAtPlaceholder(branch, thisParent);
+        generateTreeMenuFromRootObject(value, branch, master);
       }
     } else {
       if (parent.id == 'soil') {
         nestingLevelLeaf = 0;
+        thisParent = parent;
       } else {
         nestingLevelLeaf = traceAncestry(parent, 0, newArray) + 1;
       }
-      // console.log('Leaf nested at: ' + nestingLevelLeaf);
       spawnLeaflet(parent, value, nestingLevelLeaf);
     }
   }
-  // console.log(mirror);
-  // nestingLevel--;
+  // console.log();
 }
 
 
@@ -94,9 +241,6 @@ function traceAncestry(elt, count, matches) {
 }
 
 
-
-
-
 function findNestFromRoots(roots) {
   var match = false;
   var childList = roots.children;
@@ -104,6 +248,18 @@ function findNestFromRoots(roots) {
     var classes = childList[i].classList.toString();
     if (inString(classes, 'nest')) {
       match = childList[i];
+    }
+  }
+  return match;
+}
+
+
+function hasClass(elt, ...targets) {
+  var match = false;
+  var classes = elt.classList.toString();
+  for (var i = 0; i < targets.length; i++) {
+    if (inString(classes, targets[i])) {
+      match = true;
     }
   }
   return match;
@@ -160,13 +316,13 @@ function switchClass(elt, class1, class2) {
 }
 
 
-
-
 function spawnBranch(label, parent, nestingLevel){
   try {
     var roots = appendChild(parent, 'div', 'treeRoots');
+    roots.id = label;
     var trunk = appendChild(roots, 'div', 'tree inactive focus treeTrunk');
     var nest = appendChild(roots, 'div', 'nest');
+    var firstChild = appendChild(nest, 'div', 'placeholder');
     var branch = appendChild(trunk, 'div', 'treeBranch');
     var limb = appendChild(branch, 'div', 'treeLimb');
     var tabChars = [];
@@ -204,6 +360,16 @@ function spawnBranch(label, parent, nestingLevel){
   }
 }
 
+function playWrite(file, title) {
+  dispatchEvent('com.playwrite.console', title);
+  console.log(file);
+  var contents = myT.readFile(file);
+  dispatchEvent('com.playwrite.rewrite', contents);
+}
+
+
+var fullName = '';
+
 function spawnLeaflet(roots, label, nestingLevel) {
   try {
     var children = roots.children;
@@ -229,8 +395,17 @@ function spawnLeaflet(roots, label, nestingLevel) {
 
     trunk.addEventListener('click', function(e){
       resetAllFocusBut(trunk);
-      dispatchEvent('com.playwrite.console', label);
-      getHeritage(trunk, label.textContent);
+      fullName = '';
+      var lineage = getHeritage(trunk, label.textContent);
+      // console.log("Family path is: " + lineage);
+      // console.log(familyTree.data);
+      var result = familyTree.data;
+      // dispatchEvent('com.playwrite.console', result);
+      if (myT.readFile(result)) {
+        playWrite(result, 'Opening file...')
+      } else {
+        console.log('Could not read ' + result);
+      }
     });
 
   } catch(e){
@@ -245,40 +420,49 @@ function spawnLeaflet(roots, label, nestingLevel) {
   // console.log(trunk);
 }
 
+
 function getHeritage(child, names){
   if (child.parentNode) {
     var parent = child.parentNode;
     if ((parent.id !== 'soil') && (child.id !== 'soil')) {
       var classes = parent.classList.toString();
       if (inString(classes, 'treeRoots')) {
-        names = descendAndGetName(parent) + names;
+        names = parent.id + "/" + names;
       }
       getHeritage(parent, names);
-    }
-  }
-  console.log(child);
-  console.log(names);
-}
-
-
-function descendAndGetName(trunk) {
-  // console.log(trunk);
-  var children = trunk.children;
-  for (var i = 0; i < children.length; i++) {
-    var classes = children[i].classList.toString();
-    if (inString(classes, 'treeTwig')) {
-      var target = children[i].children;
-      console.log('Found target: ' + target[0].textContent);
-      return target[0].textContent;
-    }
-    if (children[i].children) {
-      descendAndGetName(children[i]);
+    } else {
+      // console.log(names);
+      fullName = "./" + names;
+      if (typeof fullName !== 'undefined') {
+        logFamilyPath(fullName);
+        // console.log(fullName);
+        return fullName;
+      }
     }
   }
 }
 
+function logFamilyPath(name) {
+  familyTree['data'] = name;
+}
 
-// appendChild(foldBtn, 'div', 'fa fa-folder fa-lg');
+
+// function descendAndGetName(trunk) {
+//   // console.log(trunk);
+//   var children = trunk.children;
+//   for (var i = 0; i < children.length; i++) {
+//     var classes = children[i].classList.toString();
+//     if (inString(classes, 'treeTwig')) {
+//       var target = children[i].children;
+//       console.log('Found target: ' + target[0].textContent);
+//       return target[0].textContent;
+//     }
+//     if (children[i].children) {
+//       descendAndGetName(children[i]);
+//     }
+//   }
+// }
+
 
 function appendChild(parent, child, ...args){
   var newChild = document.createElement(child);
@@ -291,70 +475,6 @@ function appendChild(parent, child, ...args){
 
   return parent.appendChild(newChild);
 }
-
-
-//
-// function scanThisLevel(prop, currObj, master) {
-//   var match;
-//   try {
-//     for (let [key, value] of Object.entries(master)) {
-//       if (key == currObj[prop]) {
-//         console.log(currObj[prop] + " is a match!");
-//         match = true;
-//       }
-//     }
-//     if (!match) {
-//       var depth = nestingLevel++;
-//       scanNextLevel(prop, currObj, master)
-//     }
-//   } catch(e){}
-// }
-//
-//
-// function scanNextLevel(prop, currObj, master) {
-//   var match;
-//   try {
-//     for (let [key, value] of Object.entries(master)) {
-//       if (typeof value == 'object') {
-//         scanThisLevel(prop, currObj, value)
-//       }
-//     }
-//     // if (!match) {
-//     //   var depth = nestingLevel++;
-//     //   scanNextLevel(prop, currObj, master, depth)
-//     // }
-//   } catch(e){}
-// }
-
-
-
-// foldBtn.addEventListener('click', function(e){
-//   var folds = ['fa-angle-down', 'fa-angle-right'];
-//   var show = ['none', 'flex'];
-//   isFold = !isFold;
-//   if (isFold) {
-//     console.log('Minimized');
-//     switchClass(foldIcon, folds[0], folds[1]);
-//     nest.style.display = 'none';
-//   } else {
-//     console.log('Unminimized');
-//     switchClass(foldIcon, folds[1], folds[0]);
-//     nest.style.display = 'flex';
-//   }
-//   // nest.style.display = show[isFold];
-// });
-
-
-
-// var foldBtns = [].slice.call(document.getElementsByClassName('foldBtn'));
-// foldBtns.forEach(function(v,i,a) {
-//   v.addEventListener('click', function(e){
-//     if (!hasFocus(v)) {
-//       setFocus(v, i, a, 'active', 'inactive');
-//     }
-//   })
-//   // console.log(v);
-// });
 
 
 

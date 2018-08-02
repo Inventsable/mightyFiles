@@ -9,7 +9,6 @@
 }
 
 [class^="adobe-icon-"], [class*=" adobe-icon-"] {
-  /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'Adobe-Font' !important;
   speak: none;
   font-style: normal;
@@ -18,10 +17,8 @@
   text-transform: none;
   line-height: 1;
 
-  /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
   cursor: pointer;
 }
 
@@ -35,7 +32,7 @@ html {
   --borderWidth: 1.5px;
 
   --colorPanelBG: #323232;
-
+  --altOpacity: 0.2;
 
   --border: 1.5px solid transparent;
   --btnBorder: 1.5px solid transparent;
@@ -76,35 +73,22 @@ html {
 }
 
 body {
-  /* margin: 0px 5%; */
   overflow: hidden;
   background-color: var(--colorPanelBG);
   color: var(--colorIcon);
 }
 
-.someClass, .anotherClass, #someObject {
-  color: red;
-}
-
-#someId {
-  color: green;
-}
-
 .adobe-icon-checkBoxOff:before {
   content: "\e900";
-  /* color: var(--colorCheckbox); */
 }
 .adobe-icon-checkBoxOn:before {
   content: "\e901";
-  /* color: var(--colorCheckbox); */
 }
 .adobe-icon-layerRadioOff:before {
   content: "\e902";
-  /* color: var(--colorCheckbox); */
 }
 .adobe-icon-layerRadioOn:before {
   content: "\e903";
-  /* color: var(--colorCheckbox); */
 }
 
 [class^="adobe-icon-"]:active, [class*=" adobe-icon-"]:active {
@@ -142,7 +126,6 @@ body {
   cursor: pointer;
 }
 
-
 .adobe-btn:hover, .adobe-btn-switch-off:hover, .adobe-btn-switch:hover {
   border-color: var(--colorBorder);
   background-color: var(--colorHover);
@@ -152,8 +135,6 @@ body {
   border-color: var(--colorBorder);
   background-color: var(--colorActive);
 }
-
-
 
 .adobe-btn-hover {
   border-width: var(--borderWidth);
@@ -167,8 +148,6 @@ body {
 }
 
 .adobe-btn-disabled {
-  /* border-color: var(--colorBorder); */
-  /* background-color: var(--colorDisabled); */
   padding: var(--btnPadding);
   min-width: var(--btnWidth);
   height: var(--btnHeight);
@@ -178,7 +157,6 @@ body {
   margin: var(--btnMargin);
   user-select: none;
   color: var(--colorFontDisabled);
-  /* cursor: pointer; */
 }
 
 
@@ -193,14 +171,12 @@ body {
 }
 
 .adobe-inputGroup {
-  /* border: 2px solid red; */
   display: inline-block;
   max-height: var(--inputHeight);
 }
 
 .adobe-inputGroup-suffix {
   position: relative;
-  /* float: right; */
   top: -1.4rem;
   margin-left: 50%;
 }
@@ -244,9 +220,143 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .adobe-toolbar {
+  /* margin: 0 5%; */
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
   margin: .5rem 0px;
   align-items: center;
 }
+
+.adobe-Group {
+  margin: .25rem 0px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  border: 1.5px solid var(--colorBorder);
+  border-radius: 2px;
+}
+
+.adobe-inputGroup {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 70%;
+}
+
+.adobe-checkGroup {
+  border-top-width: 0px;
+  border-bottom-width: 0px;
+  border-right-width: 0px;
+  height: var(--inputHeight);
+  width: calc(var(--inputHeight) * 2);
+  color: var(--colorCheckbox);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.adobe-checkLayer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3rem;
+  border: 1.5px solid var(--colorFont);
+  position: relative;
+  width: 6px;
+  height: 6px;
+  margin-left: .25rem;
+  cursor: pointer;
+}
+
+.adobe-checkboxGroup {
+  cursor: pointer;
+  margin: .5rem .25rem;
+  padding: .25rem;
+}
+
+.adobe-icon-checkBoxOn, .adobe-icon-checkBoxOff {
+  margin-left: .5rem;
+}
+
+.adobe-checkToggle {
+  margin-left: .25rem;
+  width: calc(var(--inputHeight)/3);
+  height: calc(var(--inputHeight)/3);
+  border: 1.5px solid black;
+  background-color: #4f80ff;
+}
+
+.adobe-input-prefix {
+  font-family: Roboto, sans-serif;
+  display: flex;
+  justify-content: flex-end;
+  margin-left: .25rem;
+  color: rgba(255,255,255,.2);
+  user-select: none;
+  cursor: default;
+}
+
+.adobe-alt {
+  opacity: var(--altOpacity);
+}
+
+.adobe-checkbox-suffix {
+  font-family: Roboto, sans-serif;
+  font-size: 10px;
+  display: flex;
+  justify-content: flex-end;
+  margin-left: .5rem;
+  margin-top: .25rem;
+  /* color: var(--colorFont); */
+  user-select: none;
+  cursor: pointer;
+}
+
+.adobe-checkboxGroup:hover {
+  color: var(--colorCheckboxHover);
+  /* background-color: red; */
+}
+
+
+
+/* Scrollbar */
+  ::-webkit-scrollbar {
+    background: #2A2A2A;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #3E3E3E;
+    border-radius: 20px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #525252;
+  }
+
+  ::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  ::-webkit-scrollbar:single-button {
+    /* margin: 1rem 0px; */
+  }
+
+  ::-webkit-scrollbar-button:start {
+    /* background-image: url('./scrollbarUpBtnAlt.png'); */
+  }
+
+  ::-webkit-scrollbar-button:end {
+    /* background-image: url('./scrollbarDownBtnAlt.png'); */
+  }
+
+  ::-webkit-scrollbar-button:start:hover {
+    /* background-image: url('./scrollbarUpBtnAltHover.png'); */
+  }
+
+  ::-webkit-scrollbar-button:end:hover {
+    /* background-image: url('./scrollbarDownBtnAltHover.png'); */
+  }
