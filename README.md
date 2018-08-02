@@ -1,5 +1,5 @@
-## treeView
+## mightyFiles
 
-Dynamic tree menu generation from any given root directory:
+This menu shows it's own file structure, generate a tree from any given directory (or object):
 
-![testing tree menu](https://thumbs.gfycat.com/RewardingMiserableBarnacle-size_restricted.gif)
+![playwrite syncing](https://thumbs.gfycat.com/ImpishMeatyChinesecrocodilelizard-size_restricted.gif)

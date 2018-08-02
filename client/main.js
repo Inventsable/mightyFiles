@@ -27,9 +27,7 @@ window.onload = init;
 function init(){
   csInterface.evalScript(`readFullDirectory('${sysPath}')`, function(mirror){
     var root = parseAll(mirror);
-    // var nestNum = 0;
     console.log(root);
-    // var firstPosition = appendChild(soil, 'div', 'placeholder');
     generateTreeMenuFromRootObject(root, soil, 0, root);
     console.log(appUI);
     correctDirectoryPositions(soil);
@@ -37,10 +35,6 @@ function init(){
 }
 
 
-// var offFocus = document.getElementById('mirror');
-// offFocus.addEventListener('click', function(e){
-//   console.log('click off focus!');
-// })
 
 /*---
 *
@@ -70,12 +64,10 @@ checkbox.forEach(function(v,i,a) {
   }
 
   v.addEventListener('click', function(e){
-    toggleState('set',v);
+    toggleState('set', v);
   });
 });
-
-
-console.log(checkboxLogic);
+// console.log(checkboxLogic);
 
 
 function toggleState(type, parent){
@@ -84,16 +76,15 @@ function toggleState(type, parent){
     if (isCheckbox(child[0])) {
       for (let [key, value] of Object.entries(checkboxLogic)) {
         if (value.elt == child[0].parentNode) {
-          console.log(child[0]);
+          // console.log(child[0]);
           var negative = !value.state;
           switch(type) {
             case 'find':
-              console.log(`This state is ${value.state}`);
+              // console.log(`This state is ${value.state}`);
             break;
             case 'set':
               value.state = negative;
-              // var thisElt = child[0];
-              console.log(`New state is ${value.state}`);
+              // console.log(`New state is ${value.state}`);
               toggleCheckbox(value.state, child[0]);
             break;
 
@@ -131,29 +122,7 @@ function toggleCheckbox(state, checkbox) {
 }
 
 
-
-function insertAtPlaceholder(elt, placehold){
-  // var eElement; // some E DOM instance
-  // var childList = parent.children;
-  // var place = parent;
-  // for (var i = 0; i < childList.length; i++) {
-  //   if (hasClass(childList[i], 'placeholder')){
-  //     place = childList[i];
-  //   }
-  // }
-  // parent.insertAdjacentElement('afterbegin', elt)
-  console.log('inserting:');
-  console.log(elt);
-  console.log('before:');
-  console.log(placehold);
-  parent.insertBefore(placehold, elt);
-}
-
-
-
-
 function correctDirectoryPositions(land){
-  // insertAtPlaceholder(elt, parent)
   var nests = [].slice.call(document.getElementsByClassName('nest'));
   nests.forEach(function(v,i,a) {
     var subFolders = [];
@@ -161,28 +130,16 @@ function correctDirectoryPositions(land){
     var childList = v.children;
     for (var i = 0; i < childList.length; i++) {
       if (hasClass(childList[i], 'treeRoots')) {
-        // console.log(`Found directory:`);
-        // console.log(childList[i]);
         subFolders.push(childList[i]);
       } else if (hasClass(childList[i], 'placeholder')) {
-        console.log(`Found placeholder:`);
-        console.log(childList[i]);
         placeholder = (childList[i]);
       }
     }
-    if (!subFolders.length) {
-      console.log('No sub-directories');
-    } else {
-      console.log(`Found directories:`);
-        for (var u = 0; u < subFolders.length; u++) {
-          // console.log();
-          v.insertBefore(subFolders[u], placeholder);
-        }
+    if (subFolders.length) {
+      for (var u = 0; u < subFolders.length; u++) {
+        v.insertBefore(subFolders[u], placeholder);
+      }
     }
-    // console.log(v);
-    // if (v !== selection) {
-    //   switchClass(v, 'active', 'inactive');
-    // }
   });
 }
 
@@ -203,20 +160,19 @@ function generateTreeMenuFromRootObject(mirror, parent, master){
           nestingLevelBranch = traceAncestry(thisParent, 0, newArray) + 1;
         }
         var branch = spawnBranch(key, thisParent, nestingLevelBranch);
-        // insertAtPlaceholder(branch, thisParent);
         generateTreeMenuFromRootObject(value, branch, master);
       }
     } else {
       if (parent.id == 'soil') {
-        nestingLevelLeaf = 0;
-        thisParent = parent;
+        // nestingLevelLeaf = 0;
+        // thisParent = parent;
+        spawnLeaflet(soil, value, 0);
       } else {
         nestingLevelLeaf = traceAncestry(parent, 0, newArray) + 1;
+        spawnLeaflet(parent, value, nestingLevelLeaf);
       }
-      spawnLeaflet(parent, value, nestingLevelLeaf);
     }
   }
-  // console.log();
 }
 
 
@@ -372,13 +328,18 @@ var fullName = '';
 
 function spawnLeaflet(roots, label, nestingLevel) {
   try {
-    var children = roots.children;
-    for (var i = 0; i < children.length; i++) {
-      if (children[i] == roots) {
-        continue
-      } else {
-        var nest = children[i];
+    var nest;
+    if (roots.id !== 'soil') {
+      var children = roots.children;
+      for (var i = 0; i < children.length; i++) {
+        if (children[i] == roots) {
+          continue
+        } else {
+          nest = children[i];
+        }
       }
+    } else {
+      nest = roots;
     }
     var trunk = appendChild(nest, 'div', 'tree inactive focus treeTrunk');
     var branch = appendChild(trunk, 'div', 'treeBranch');
