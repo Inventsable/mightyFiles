@@ -11,6 +11,7 @@ var checkbox = document.getElementById('syncPlayWrite')
 loadUniversalJSXLibraries();
 loadJSX(`${appName}.jsx`);
 loadJSX(`myTfiles.jsx`);
+dispatchEvent('mighty.start', extFolder())
 
 var soil = document.getElementById('soil');
 var selection = null;

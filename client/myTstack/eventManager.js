@@ -15,7 +15,9 @@
     // var data = trimEdges(evt.data, 1);
     console.log(evt);
   });
-
+  csInterface.addEventListener('mighty.rollcall', function(evt) {
+    dispatchEvent('mighty.rollanswer', extFolder())
+  });
 
   function dispatchEvent(name, data) {
   	var event = new CSEvent(name, 'APPLICATION');
