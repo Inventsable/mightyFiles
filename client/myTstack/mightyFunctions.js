@@ -72,8 +72,23 @@ function inString(haystack, needle){
 }
 
 
+function switchClass(elt, class1, class2) {
+  if (elt.classList.contains(class1)) {
+    elt.classList.remove(class1);
+    elt.classList.add(class2);
+  }
+}
 
-
+function hasClass(elt, ...targets) {
+  var match = false;
+  var classes = elt.classList.toString();
+  for (var i = 0; i < targets.length; i++) {
+    if (inString(classes, targets[i])) {
+      match = true;
+    }
+  }
+  return match;
+}
 
 function containsMultiple(haystack, needle){
   if (haystack.split(needle).length > 2) {

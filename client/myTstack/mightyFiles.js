@@ -205,8 +205,7 @@ const myT = {
     }
     var result = myT.writeFile(path2, newName, myT.readFile(path, original));
     return result;
-  },
-
+  }
 }
 
 
@@ -229,7 +228,7 @@ function extFolder(){
 
 function hasFileExtension(str){
   var errs = [];
-  var ext = ['.js', '.jsx', '.html', '.css', '.json', '.svg', '.txt', '.md'];
+  var ext = ['.js', '.jsx', '.html', '.css', '.json', '.svg', '.txt', '.md', '.csv', '.xml', '.debug', 'LICENSE'];
   for (var i = 0; i < ext.length; i++){
     if (inString(str, ext[i])) {
       errs.push(ext[i]);

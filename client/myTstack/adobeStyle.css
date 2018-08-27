@@ -1,14 +1,15 @@
 @font-face {
   font-family: 'Adobe-Font';
   src:
-    url('fonts/Adobe-Font.ttf?b1xg30') format('truetype'),
-    url('fonts/Adobe-Font.woff?b1xg30') format('woff'),
-    url('fonts/Adobe-Font.svg?b1xg30#Adobe-Font') format('svg');
+    url('fonts/Adobe-Font.ttf?fovuq5') format('truetype'),
+    url('fonts/Adobe-Font.woff?fovuq5') format('woff'),
+    url('fonts/Adobe-Font.svg?fovuq5#Adobe-Font') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
 [class^="adobe-icon-"], [class*=" adobe-icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'Adobe-Font' !important;
   speak: none;
   font-style: normal;
@@ -17,13 +18,15 @@
   text-transform: none;
   line-height: 1;
 
+  /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  cursor: pointer;
 }
+
 
 html {
   font-size: 12px;
+  margin: 0 2%;
 }
 
 :root {
@@ -78,18 +81,93 @@ body {
   color: var(--colorIcon);
 }
 
-.adobe-icon-checkBoxOff:before {
+.adobe-icon-newLayer:before {
   content: "\e900";
+  color: #c3c3c3;
+}
+.adobe-icon-angleRight:before {
+  content: "\e901";
+  color: #c3c3c3;
+}
+.adobe-icon-assetExport:before {
+  content: "\e902";
+  color: #c3c3c3;
+}
+.adobe-icon-cancel:before {
+  content: "\e903";
+  color: #c3c3c3;
+}
+.adobe-icon-checkBoxOff:before {
+  content: "\e904";
+  color: #999;
 }
 .adobe-icon-checkBoxOn:before {
-  content: "\e901";
+  content: "\e905";
+  color: #999;
+}
+.adobe-icon-dissect .path1:before {
+  content: "\e906";
+  color: rgb(195, 195, 195);
+  opacity: 0.5;
+}
+.adobe-icon-dissect .path2:before {
+  content: "\e907";
+  margin-left: -1.0029296875em;
+  color: rgb(195, 195, 195);
+}
+.adobe-icon-file:before {
+  content: "\e908";
+  color: #c3c3c3;
+}
+.adobe-icon-fill:before {
+  content: "\e909";
+  color: #c3c3c3;
+}
+.adobe-icon-find:before {
+  content: "\e90a";
+  color: #c3c3c3;
+}
+.adobe-icon-folder:before {
+  content: "\e90b";
+  color: #c3c3c3;
 }
 .adobe-icon-layerRadioOff:before {
-  content: "\e902";
+  content: "\e90c";
+  color: #999;
 }
 .adobe-icon-layerRadioOn:before {
-  content: "\e903";
+  content: "\e90d";
+  color: #999;
 }
+.adobe-icon-lock:before {
+  content: "\e90e";
+  color: #c3c3c3;
+}
+.adobe-icon-newLayer2:before {
+  content: "\e90f";
+  color: #c3c3c3;
+}
+.adobe-icon-play:before {
+  content: "\e910";
+  color: #c3c3c3;
+}
+.adobe-icon-record:before {
+  content: "\e911";
+  color: #c3c3c3;
+}
+.adobe-icon-stroke:before {
+  content: "\e912";
+  color: #c3c3c3;
+}
+.adobe-icon-trash:before {
+  content: "\e913";
+  color: #c3c3c3;
+}
+.adobe-icon-visible:before {
+  content: "\e914";
+  color: #c3c3c3;
+}
+
 
 [class^="adobe-icon-"]:active, [class*=" adobe-icon-"]:active {
   cursor: pointer;
@@ -115,6 +193,7 @@ body {
 }
 
 .adobe-btn, .adobe-btn-switch, .adobe-btn-switch-off, .adobe-btn-switch-on, .adobe-btn-hover, .adobe-btn-active {
+  font-size: 14px;
   padding: var(--btnPadding);
   min-width: var(--btnWidth);
   height: var(--btnHeight);
@@ -300,6 +379,16 @@ input[type=number]::-webkit-outer-spin-button {
   cursor: default;
 }
 
+.adobe-input-prepend {
+  font-family: Roboto, sans-serif;
+  display: flex;
+  justify-content: flex-end;
+  margin-left: .25rem;
+  color: rgba(255,255,255,.2);
+  user-select: none;
+  cursor: default;
+}
+
 .adobe-alt {
   opacity: var(--altOpacity);
 }
@@ -338,10 +427,6 @@ input[type=number]::-webkit-outer-spin-button {
   }
 
   ::-webkit-scrollbar-button {
-    display: none;
-  }
-
-  ::-webkit-scrollbar-resizer {
     display: none;
   }
 

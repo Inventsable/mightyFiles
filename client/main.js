@@ -22,9 +22,9 @@ var isFold = false;
 var familyTree = {};
 
 
-window.onload = init;
+window.onload = build;
 
-function init(){
+function build(){
   csInterface.evalScript(`readFullDirectory('${sysPath}')`, function(mirror){
     var root = parseAll(mirror);
     console.log(root);
@@ -32,94 +32,95 @@ function init(){
     console.log(appUI);
     correctDirectoryPositions(soil);
   });
+  // init();
 }
 
 
 
-/*---
-*
-*    CHECKBOX
-*
----*/
-
-var checkboxLogic = {};
-var checkbox = [].slice.call(document.getElementsByClassName('adobe-checkboxGroup'));
-checkbox.forEach(function(v,i,a) {
-  console.log(i);
-  var child = v.children;
-  for (var e = 0; e < child.length; e++) {
-    if (hasClass(child[e], 'adobe-icon-checkBoxOn')) {
-      checkboxLogic[i] = {
-        state : true,
-        elt : v,
-      }
-      console.log(child[e]);
-    } else if (hasClass(child[e], 'adobe-icon-checkBoxOff')) {
-      checkboxLogic[i] = {
-        state : false,
-        elt : v,
-      }
-      console.log(child[e]);
-    }
-  }
-
-  v.addEventListener('click', function(e){
-    toggleState('set', v);
-  });
-});
-// console.log(checkboxLogic);
-
-
-function toggleState(type, parent){
-  var child = parent.children;
-  // for (var e = 0; e < child.length; e++) {
-    if (isCheckbox(child[0])) {
-      for (let [key, value] of Object.entries(checkboxLogic)) {
-        if (value.elt == child[0].parentNode) {
-          // console.log(child[0]);
-          var negative = !value.state;
-          switch(type) {
-            case 'find':
-              // console.log(`This state is ${value.state}`);
-            break;
-            case 'set':
-              value.state = negative;
-              // console.log(`New state is ${value.state}`);
-              toggleCheckbox(value.state, child[0]);
-            break;
-
-            default:
-            console.log('no params');
-            break;
-          }
-          return value.state;
-        }
-      }
-    } else {
-      console.log("Is not a checkbox");
-    }
-  // }
-}
-
-
-
-function isCheckbox(elt) {
-  var match = false;
-  if (hasClass(elt, 'adobe-icon-checkBoxOn')) {
-    match = true;
-  } else if (hasClass(elt, 'adobe-icon-checkBoxOff')) {
-    match = true;
-  }
-  return match;
-}
-
-function toggleCheckbox(state, checkbox) {
-  if (state) {
-    switchClass(checkbox, 'adobe-icon-checkBoxOff', 'adobe-icon-checkBoxOn');
-  } else {
-    switchClass(checkbox, 'adobe-icon-checkBoxOn', 'adobe-icon-checkBoxOff');
-  }
-}
+// /*---
+// *
+// *    CHECKBOX
+// *
+// ---*/
+//
+// var checkboxLogic = {};
+// var checkbox = [].slice.call(document.getElementsByClassName('adobe-checkboxGroup'));
+// checkbox.forEach(function(v,i,a) {
+//   console.log(i);
+//   var child = v.children;
+//   for (var e = 0; e < child.length; e++) {
+//     if (hasClass(child[e], 'adobe-icon-checkBoxOn')) {
+//       checkboxLogic[i] = {
+//         state : true,
+//         elt : v,
+//       }
+//       console.log(child[e]);
+//     } else if (hasClass(child[e], 'adobe-icon-checkBoxOff')) {
+//       checkboxLogic[i] = {
+//         state : false,
+//         elt : v,
+//       }
+//       console.log(child[e]);
+//     }
+//   }
+//
+//   v.addEventListener('click', function(e){
+//     toggleState('set', v);
+//   });
+// });
+// // console.log(checkboxLogic);
+//
+//
+// function toggleState(type, parent){
+//   var child = parent.children;
+//   // for (var e = 0; e < child.length; e++) {
+//     if (isCheckbox(child[0])) {
+//       for (let [key, value] of Object.entries(checkboxLogic)) {
+//         if (value.elt == child[0].parentNode) {
+//           // console.log(child[0]);
+//           var negative = !value.state;
+//           switch(type) {
+//             case 'find':
+//               // console.log(`This state is ${value.state}`);
+//             break;
+//             case 'set':
+//               value.state = negative;
+//               // console.log(`New state is ${value.state}`);
+//               toggleCheckbox(value.state, child[0]);
+//             break;
+//
+//             default:
+//             console.log('no params');
+//             break;
+//           }
+//           return value.state;
+//         }
+//       }
+//     } else {
+//       console.log("Is not a checkbox");
+//     }
+//   // }
+// }
+//
+//
+//
+// function isCheckbox(elt) {
+//   var match = false;
+//   if (hasClass(elt, 'adobe-icon-checkBoxOn')) {
+//     match = true;
+//   } else if (hasClass(elt, 'adobe-icon-checkBoxOff')) {
+//     match = true;
+//   }
+//   return match;
+// }
+//
+// function toggleCheckbox(state, checkbox) {
+//   if (state) {
+//     switchClass(checkbox, 'adobe-icon-checkBoxOff', 'adobe-icon-checkBoxOn');
+//   } else {
+//     switchClass(checkbox, 'adobe-icon-checkBoxOn', 'adobe-icon-checkBoxOff');
+//   }
+// }
 
 
 function correctDirectoryPositions(land){
@@ -210,17 +211,6 @@ function findNestFromRoots(roots) {
 }
 
 
-function hasClass(elt, ...targets) {
-  var match = false;
-  var classes = elt.classList.toString();
-  for (var i = 0; i < targets.length; i++) {
-    if (inString(classes, targets[i])) {
-      match = true;
-    }
-  }
-  return match;
-}
-
 
 function parseAll(str){
   var result = JSON.parse(str);
@@ -264,12 +254,7 @@ function resetAllFocusBut(selection){
   });
 }
 
-function switchClass(elt, class1, class2) {
-  if (elt.classList.contains(class1)) {
-    elt.classList.remove(class1);
-    elt.classList.add(class2);
-  }
-}
+
 
 
 function spawnBranch(label, parent, nestingLevel){
@@ -288,7 +273,7 @@ function spawnBranch(label, parent, nestingLevel){
     var dropBtn = appendChild(limb, 'div', 'tree treeLeaf foldBtn');
     var dropIcon = appendChild(dropBtn, 'span', 'fa fa-angle-right fa-lg');
     var leaf = appendChild(limb, 'div', 'tree treeLeaf');
-    var icon = appendChild(leaf, 'span', 'fa fa-folder fa-lg');
+    var icon = appendChild(leaf, 'span', 'adobe-icon-folder');
     var twig = appendChild(limb, 'div', 'tree treeTwig');
     var label = appendChild(twig, 'span', 'treeText', label);
     nest.style.display = 'none';
@@ -349,7 +334,7 @@ function spawnLeaflet(roots, label, nestingLevel) {
       tabChars.push(appendChild(limb, 'div', 'treeTab'));
     }
     var leaf = appendChild(limb, 'div', 'tree treeLeaf');
-    var icon = appendChild(leaf, 'span', 'fa fa-file fa-lg');
+    var icon = appendChild(leaf, 'span', 'adobe-icon-file');
     var twig = appendChild(limb, 'div', 'tree treeTwig');
     var label = appendChild(twig, 'span', 'treeText', label);
     spawn = true;
